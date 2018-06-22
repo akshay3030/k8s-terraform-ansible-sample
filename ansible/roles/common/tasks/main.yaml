@@ -16,7 +16,9 @@
     group: root
     mode: 0644
   become: true
+  #changed_when: false
 
 - name: Set internal DNS name as hostname
   shell: "hostname {{ ec2_private_dns_name }}"
   become: true
+  #changed_when: false

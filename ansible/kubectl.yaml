@@ -31,12 +31,16 @@
 
   - name: Set kubectl endpoint
     shell: "kubectl config set-cluster {{ kubernetes_cluster_name }} --certificate-authority={{ certificate_path }}/ca.pem --embed-certs=true --server=https://{{ kubernetes_api_endpoint }}:{{ kubernetes_api_endpoint_port }}"
+    #changed_when: false
 
   - name: Set kubectl credentials
     shell: "kubectl config set-credentials {{ kubectl_user }} --token {{ kubectl_token }}"
+    #changed_when: false
 
   - name: Set kubectl default context
     shell: "kubectl config set-context default-context --cluster={{ kubernetes_cluster_name }} --user={{ kubectl_user }}"
+    #changed_when: false
 
   - name: Switch kubectl to default context
     shell: "kubectl config use-context default-context"
+    #changed_when: false

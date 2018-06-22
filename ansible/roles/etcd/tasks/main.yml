@@ -59,10 +59,12 @@
 - name: Reload systemd
   command: systemctl daemon-reload
   become: true
+  #changed_when: false
 
 - name: Enable etcd service
   command: systemctl enable etcd
   become: true
+  #changed_when: false
 
 - name: Restart etcd
   service:
@@ -70,6 +72,7 @@
     state: restarted
     enabled: yes
   become: true
+  #changed_when: false
 
 - name: Wait for etcd listening
   wait_for: port=2379 timeout=60
@@ -80,3 +83,4 @@
   until: cmd_result.stdout.find("cluster is healthy") != -1
   retries: 5
   delay: 5
+  #changed_when: false

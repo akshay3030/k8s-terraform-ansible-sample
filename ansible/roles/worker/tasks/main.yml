@@ -71,6 +71,7 @@
 ###########
 
 - name: Create CNI dir
+  #file: path=/opt/cni/bin state=directory
   file: path=/opt/cni state=directory
   become: true
 
@@ -85,8 +86,10 @@
   unarchive:
     copy: no
     src: "/usr/local/src/{{ cni_package_file }}"
+    #dest: "/opt/cni/bin/"
     dest: "/opt/cni/"
     creates: "/opt/cni/bin/cnitool"
+    #extra_opts: [--strip-components=1]
   become: true
 
 - name: Create Kubelet directory
@@ -120,6 +123,7 @@
     dest: /etc/systemd/system/kubelet.service
     mode: 700
   become: true
+  #changed_when: false
   notify:
     - Reload systemd
     - Enable kubelet service
