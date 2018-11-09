@@ -11,7 +11,7 @@ resource "aws_instance" "etcd" {
     private_ip = "${cidrhost(var.vpc_cidr, 10 + count.index)}"
     associate_public_ip_address = true # Instances have public, dynamic IP
 
-    availability_zone = "${var.zone}"
+    availability_zone = "${var.region}${var.availibility_zone_suffix}"
     vpc_security_group_ids = ["${aws_security_group.kubernetes.id}"]
     key_name = "${var.default_keypair_name}"
 

@@ -47,11 +47,14 @@
     dest: /usr/bin
     mode: 0755
   with_items: # Remote-to-remote copy doesn't support file glob yet
+    - containerd
+    - containerd-shim
+    - ctr
     - docker
-    - docker-containerd
-    - docker-containerd-ctr
-    - docker-containerd-shim
-    - docker-runc
+    - docker-init
+    - docker-proxy
+    - dockerd
+    - runc
   become: true
 
 - name: Add docker systemd unit

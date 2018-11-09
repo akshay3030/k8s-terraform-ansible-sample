@@ -13,7 +13,7 @@ resource "aws_instance" "worker" {
     associate_public_ip_address = true # Instances have public, dynamic IP
     source_dest_check = false # TODO Required??
 
-    availability_zone = "${var.zone}"
+    availability_zone = "${var.region}${var.availibility_zone_suffix}"
     vpc_security_group_ids = ["${aws_security_group.kubernetes.id}"]
     key_name = "${var.default_keypair_name}"
 

@@ -1,7 +1,8 @@
 variable control_cidr {
   description = "CIDR for maintenance: inbound traffic will be allowed from this IPs"
-  #default = "209.220.148.28/32" non-home
-  default = "67.180.52.27/32"
+  default = "209.220.148.26/32"
+  #default = "209.220.148.28/32" #non-home
+  #default = "67.180.52.27/32" #home
 }
 
 variable default_keypair_public_key {
@@ -37,11 +38,11 @@ variable ansibleFilter {
 
 # Networking setup
 variable region {
-  default = "us-west-2"
+  default = "us-east-1"
 }
 
-variable zone {
-  default = "us-west-2a"
+variable availibility_zone_suffix {
+  default = "a"
 }
 
 ### VARIABLES BELOW MUST NOT BE CHANGED ###
@@ -56,6 +57,7 @@ variable kubernetes_pod_cidr {
 
 
 # Instances Setup
+#https://cloud-images.ubuntu.com/locator/ec2/
 variable amis {
   description = "Default AMIs to use for nodes depending on the region"
   type = "map"
@@ -66,11 +68,12 @@ variable amis {
     eu-central-1 = "ami-8504fdea"
     eu-west-1 = "ami-0d77397e"
     sa-east-1 = "ami-e93da085"
-    us-east-1 = "ami-40d28157"
+    #us-east-1 = "ami-40d28157"
     #us-west-1 = "ami-6e165d0e"
     us-west-1 = "ami-8d948ced"
     #us-west-2 = "ami-a9d276c9"
-    us-west-2 = "ami-db710fa3"
+    us-east-1 = "ami-0ac019f4fcb7cb7e6"
+    us-west-2 = "ami-0bbe6b35405ecebdb"
   }
 }
 variable default_instance_user {

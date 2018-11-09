@@ -46,7 +46,7 @@ resource "aws_key_pair" "default_keypair" {
 resource "aws_subnet" "kubernetes" {
   vpc_id = "${aws_vpc.kubernetes.id}"
   cidr_block = "${var.vpc_cidr}"
-  availability_zone = "${var.zone}"
+  availability_zone = "${var.region}${var.availibility_zone_suffix}"
 
   tags {
     Name = "kubernetes"
