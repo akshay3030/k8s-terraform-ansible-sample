@@ -1,8 +1,8 @@
 variable control_cidr {
   description = "CIDR for maintenance: inbound traffic will be allowed from this IPs"
-  default = "209.220.148.26/32"
+  #default = "209.220.148.26/32"
   #default = "209.220.148.28/32" #non-home
-  #default = "67.180.52.27/32" #home
+  default = "67.180.52.27/32" #home
 }
 
 variable default_keypair_public_key {
