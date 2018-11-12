@@ -4,7 +4,7 @@
 
 resource "aws_instance" "controller" {
 
-    count = 3
+    count = 1
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.controller_instance_type}"
 
