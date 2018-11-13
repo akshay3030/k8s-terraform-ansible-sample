@@ -51,7 +51,7 @@ resource "aws_elb" "kubernetes_api" {
       healthy_threshold = 2
       unhealthy_threshold = 2
       timeout = 15
-      target = "HTTP:8080/healthz"
+      target = "HTTPS:6443/healthz"
       interval = 30
     }
 
