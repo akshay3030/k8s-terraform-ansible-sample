@@ -1,7 +1,7 @@
 variable control_cidr {
   description = "CIDR for maintenance: inbound traffic will be allowed from this IPs"
-  #default = "xx.xx.148.26/32"
-  #default = "xx.xx.148.0/24" #non-home
+  #default = "xx.xx.xx.xx/32"
+  #default = "xx.xx.xx.0/24" #non-home
   default = "xx.xx.xx.xx/32" #home
 }
 
