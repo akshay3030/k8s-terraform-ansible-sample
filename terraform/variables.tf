@@ -1,8 +1,6 @@
 variable control_cidr {
   description = "CIDR for maintenance: inbound traffic will be allowed from this IPs"
-  #default = "xx.xx.xx.xx/32"
-  #default = "xx.xx.xx.0/24" #non-home
-  default = "xx.xx.xx.xx/32" #home
+  default = "10.0.0.0/8" #private
 }
 
 variable default_keypair_public_key {
@@ -96,5 +94,5 @@ variable kubernetes_cluster_dns {
 }
 
 variable "route53_hosted_zone_name" {
-  default = "devops.xxxxx.io"
+  default = "devops.elliemae.io"
 }

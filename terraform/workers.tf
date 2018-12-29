@@ -8,9 +8,9 @@ resource "aws_instance" "worker" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.worker_instance_type}"
 
-    subnet_id = "${aws_subnet.kubernetes.id}"
-    private_ip = "${cidrhost(var.vpc_cidr, 30 + count.index)}"
-    associate_public_ip_address = true # Instances have public, dynamic IP
+    subnet_id = "${data.aws_subnet.private_subnet_0.id}"
+    #private_ip = "${cidrhost(var.vpc_cidr, 30 + count.index)}"
+    #associate_public_ip_address = true # Instances have public, dynamic IP
     source_dest_check = false # TODO Required??
 
     availability_zone = "${var.region}${var.availibility_zone_suffix}"
@@ -27,5 +27,5 @@ resource "aws_instance" "worker" {
 }
 
 output "kubernetes_workers_public_ip" {
-  value = "${join(",", aws_instance.worker.*.public_ip)}"
+  value = "${join(",", aws_instance.worker.*.private_ip)}"
 }

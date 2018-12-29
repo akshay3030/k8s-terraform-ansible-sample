@@ -10,12 +10,12 @@ resource "aws_instance" "controller" {
 
     iam_instance_profile = "${aws_iam_instance_profile.kubernetes.id}"
 
-    subnet_id = "${aws_subnet.kubernetes.id}"
-    private_ip = "${cidrhost(var.vpc_cidr, 20 + count.index)}"
-    associate_public_ip_address = true # Instances have public, dynamic IP
+    subnet_id = "${data.aws_subnet.private_subnet_0.id}"
+    #private_ip = "${cidrhost(var.vpc_cidr, 20 + count.index)}"
+    #associate_public_ip_address = true # Instances have public, dynamic IP
     source_dest_check = false # TODO Required??
 
-    availability_zone = "${var.region}${var.availibility_zone_suffix}"
+    #availability_zone = "${var.region}${var.availibility_zone_suffix}"
     vpc_security_group_ids = ["${aws_security_group.kubernetes.id}"]
     key_name = "${var.default_keypair_name}"
 
@@ -35,13 +35,14 @@ resource "aws_instance" "controller" {
 resource "aws_elb" "kubernetes_api" {
     name = "${var.elb_name}"
     instances = ["${aws_instance.controller.*.id}"]
-    subnets = ["${aws_subnet.kubernetes.id}"]
+    subnets = ["${data.aws_subnet.private_subnet_0.id}"]
     cross_zone_load_balancing = false
+    internal = true
 
     security_groups = ["${aws_security_group.kubernetes_api.id}"]
 
     listener {
-      lb_port = 6443
+      lb_port = 443
       instance_port = 6443
       lb_protocol = "TCP"
       instance_protocol = "TCP"
@@ -66,13 +67,21 @@ resource "aws_elb" "kubernetes_api" {
 ############
 
 resource "aws_security_group" "kubernetes_api" {
-  vpc_id = "${aws_vpc.kubernetes.id}"
+  vpc_id = "${data.aws_vpc.elmae.id}"
   name = "kubernetes-api"
 
   # Allow inbound traffic to the port used by Kubernetes API HTTPS
+  # Can use only 443 or 80 as other ports are blocked by internal firewall by network team
   ingress {
-    from_port = 6443
-    to_port = 6443
+    from_port = 443
+    to_port = 443
+    protocol = "TCP"
+    cidr_blocks = ["${var.control_cidr}"]
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
     protocol = "TCP"
     cidr_blocks = ["${var.control_cidr}"]
   }

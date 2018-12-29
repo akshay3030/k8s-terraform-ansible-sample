@@ -1,32 +1,3 @@
-############
-## VPC
-############
-
-resource "aws_vpc" "kubernetes" {
-  cidr_block = "${var.vpc_cidr}"
-  enable_dns_hostnames = true
-
-  tags {
-    Name = "${var.vpc_name}"
-    Owner = "${var.owner}"
-  }
-}
-
-# DHCP Options are not actually required, being identical to the Default Option Set
-resource "aws_vpc_dhcp_options" "dns_resolver" {
-  domain_name = "${var.region}.compute.internal"
-  domain_name_servers = ["AmazonProvidedDNS"]
-
-  tags {
-    Name = "${var.vpc_name}"
-    Owner = "${var.owner}"
-  }
-}
-
-resource "aws_vpc_dhcp_options_association" "dns_resolver" {
-  vpc_id ="${aws_vpc.kubernetes.id}"
-  dhcp_options_id = "${aws_vpc_dhcp_options.dns_resolver.id}"
-}
 
 ##########
 # Keypair
@@ -42,49 +13,12 @@ resource "aws_key_pair" "default_keypair" {
 ## Subnets
 ############
 
-# Subnet (public)
-resource "aws_subnet" "kubernetes" {
-  vpc_id = "${aws_vpc.kubernetes.id}"
-  cidr_block = "${var.vpc_cidr}"
-  availability_zone = "${var.region}${var.availibility_zone_suffix}"
 
-  tags {
-    Name = "kubernetes"
-    Owner = "${var.owner}"
-  }
-}
-
-resource "aws_internet_gateway" "gw" {
-  vpc_id = "${aws_vpc.kubernetes.id}"
-  tags {
-    Name = "kubernetes"
-    Owner = "${var.owner}"
-  }
-}
 
 ############
 ## Routing
 ############
 
-resource "aws_route_table" "kubernetes" {
-    vpc_id = "${aws_vpc.kubernetes.id}"
-
-    # Default route through Internet Gateway
-    route {
-      cidr_block = "0.0.0.0/0"
-      gateway_id = "${aws_internet_gateway.gw.id}"
-    }
-
-    tags {
-      Name = "kubernetes"
-      Owner = "${var.owner}"
-    }
-}
-
-resource "aws_route_table_association" "kubernetes" {
-  subnet_id = "${aws_subnet.kubernetes.id}"
-  route_table_id = "${aws_route_table.kubernetes.id}"
-}
 
 
 ############
@@ -92,7 +26,8 @@ resource "aws_route_table_association" "kubernetes" {
 ############
 
 resource "aws_security_group" "kubernetes" {
-  vpc_id = "${aws_vpc.kubernetes.id}"
+  #vpc_id = "${aws_vpc.kubernetes.id}"
+  vpc_id = "${data.aws_vpc.elmae.id}"
   name = "kubernetes"
 
   # Allow all outbound

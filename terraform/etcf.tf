@@ -7,9 +7,9 @@ resource "aws_instance" "etcd" {
     ami = "${lookup(var.amis, var.region)}"
     instance_type = "${var.etcd_instance_type}"
 
-    subnet_id = "${aws_subnet.kubernetes.id}"
-    private_ip = "${cidrhost(var.vpc_cidr, 10 + count.index)}"
-    associate_public_ip_address = true # Instances have public, dynamic IP
+    subnet_id = "${data.aws_subnet.private_subnet_0.id}"
+    #private_ip = "${cidrhost(var.vpc_cidr, 10 + count.index)}"
+    #associate_public_ip_address = true # Instances have public, dynamic IP
 
     availability_zone = "${var.region}${var.availibility_zone_suffix}"
     vpc_security_group_ids = ["${aws_security_group.kubernetes.id}"]

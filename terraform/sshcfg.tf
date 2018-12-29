@@ -9,15 +9,15 @@ data "template_file" "ssh_cfg" {
     vars {
       user = "${var.default_instance_user}"
 
-      etcd0_ip = "${aws_instance.etcd.0.public_ip}"
-      etcd1_ip = "${aws_instance.etcd.1.public_ip}"
-      etcd2_ip = "${aws_instance.etcd.2.public_ip}"
-      controller0_ip = "${aws_instance.controller.0.public_ip}"
-      controller1_ip = "${aws_instance.controller.1.public_ip}"
-      controller2_ip = "${aws_instance.controller.2.public_ip}"
-      worker0_ip = "${aws_instance.worker.0.public_ip}"
-      worker1_ip = "${aws_instance.worker.1.public_ip}"
-      worker2_ip = "${aws_instance.worker.2.public_ip}"
+      etcd0_ip = "${aws_instance.etcd.0.private_ip}"
+      etcd1_ip = "${aws_instance.etcd.1.private_ip}"
+      etcd2_ip = "${aws_instance.etcd.2.private_ip}"
+      controller0_ip = "${aws_instance.controller.0.private_ip}"
+      controller1_ip = "${aws_instance.controller.1.private_ip}"
+      controller2_ip = "${aws_instance.controller.2.private_ip}"
+      worker0_ip = "${aws_instance.worker.0.private_ip}"
+      worker1_ip = "${aws_instance.worker.1.private_ip}"
+      worker2_ip = "${aws_instance.worker.2.private_ip}"
     }
 }
 resource "null_resource" "ssh_cfg" {

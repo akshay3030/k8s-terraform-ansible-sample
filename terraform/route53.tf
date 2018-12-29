@@ -10,9 +10,9 @@ resource "aws_route53_record" "k8-controller" {
   ttl     = "300"
 
   records = [
-    "${aws_instance.controller.0.public_ip}",
-    "${aws_instance.controller.1.public_ip}",
-    "${aws_instance.controller.2.public_ip}",
+    "${aws_instance.controller.0.private_ip}",
+    "${aws_instance.controller.1.private_ip}",
+    "${aws_instance.controller.2.private_ip}",
   ]
 }
 
